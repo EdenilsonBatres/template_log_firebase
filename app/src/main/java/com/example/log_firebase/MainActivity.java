@@ -22,7 +22,7 @@ import com.google.firebase.auth.FirebaseUser;
 public class MainActivity extends AppCompatActivity {
 
     private EditText textemail, textpassword;
-    private Button btn_registrar;
+    private Button btn_registrar, btn_login;
     private ProgressDialog progressDialog;
     private FirebaseAuth firebaseAuth;
 
@@ -38,7 +38,9 @@ public class MainActivity extends AppCompatActivity {
         textemail = (EditText) findViewById(R.id.txt_correo);
         textpassword = (EditText) findViewById(R.id.txt_contraseña);
         btn_registrar = (Button) findViewById(R.id.button_registrar);
+        btn_login = (Button) findViewById(R.id.button_entrar);
         progressDialog = new ProgressDialog(this);
+
     }
 
     private void registrarUsuario()
@@ -62,7 +64,8 @@ public class MainActivity extends AppCompatActivity {
         //creando la autenticacion
 
         firebaseAuth.createUserWithEmailAndPassword(email, pass)
-                .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
+                .addOnCompleteListener(this, new OnCompleteListener<AuthResult>()
+                {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task)
                     {
@@ -86,9 +89,60 @@ public class MainActivity extends AppCompatActivity {
                 });
     }
 
-    public void onClick(View view)
+    public void registrar(View view)
     {
-        registrarUsuario();
+       registrarUsuario();
+    }
+    public void loguear(View view)
+    {
+        loguearUsiario();
+    }
+
+    private void loguearUsiario()
+    {
+        String email = textemail.getText().toString().trim();
+        String pass = textpassword.getText().toString().trim();
+
+            if (TextUtils.isEmpty(email))
+        {
+            Toast.makeText(this, "debes igresar un email", Toast.LENGTH_SHORT).show();
+            return;
+        }
+            if (TextUtils.isEmpty(pass))
+        {
+            Toast.makeText(this, "Debes ingresar una contraseña puñetas", Toast.LENGTH_SHORT).show();
+            return;
+        }
+            progressDialog.setMessage("se esta comprovando tu inicio de secion puñetas");
+            progressDialog.show();
+
+        //creando la autenticacion
+
+                firebaseAuth.signInWithEmailAndPassword(email, pass)
+                    .addOnCompleteListener(this, new OnCompleteListener<AuthResult>()
+                    {
+                        @Override
+                        public void onComplete(@NonNull Task<AuthResult> task)
+                        {
+                            if (task.isSuccessful())
+                            {
+                                Toast.makeText(MainActivity.this, "bienvenido a tu asquerosa cuenta", Toast.LENGTH_SHORT).show();
+                            }
+                            else
+                            {
+                                if (task.getException() instanceof FirebaseAuthUserCollisionException)
+                                {
+                                    Toast.makeText(MainActivity.this, "ya existe tu cuenta asquerosa", Toast.LENGTH_SHORT).show();
+                                }
+                                else
+                                {
+                                    Toast.makeText(MainActivity.this, "pasa algo con tu asquerosa cuenta, " +
+                                            "el correo o la contraseña anda mal", Toast.LENGTH_SHORT).show();
+                                }
+                            }
+                            progressDialog.dismiss();
+                        }
+                    });
     }
 
 }
