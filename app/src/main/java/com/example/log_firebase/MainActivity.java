@@ -15,6 +15,7 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseAuthUserCollisionException;
 import com.google.firebase.auth.FirebaseUser;
 
 
@@ -71,7 +72,14 @@ public class MainActivity extends AppCompatActivity {
                         }
                         else
                         {
-                            Toast.makeText(MainActivity.this, "No se pudo crear tu asquerosa cuenta", Toast.LENGTH_SHORT).show();
+                            if (task.getException() instanceof FirebaseAuthUserCollisionException)
+                            {
+                                Toast.makeText(MainActivity.this, "ya existe tu cuenta asquerosa", Toast.LENGTH_SHORT).show();
+                            }
+                            else
+                            {
+                                Toast.makeText(MainActivity.this, "No se pudo crear tu asquerosa cuenta", Toast.LENGTH_SHORT).show();
+                            }
                         }
                         progressDialog.dismiss();
                     }
