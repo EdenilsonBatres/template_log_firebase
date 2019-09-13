@@ -1,0 +1,10 @@
+<resources>
+    <string name="app_name">log_firebase</string>
+    <string name="icono">icono de log firebase</string>
+    <string name="txt_correo">Escribe tu correo electronico</string>
+    <string name="descripcion_correo">Este es el campo del correo</string>
+    <string name="descripcion_contraseña">Este es el campo de las contrasña</string>
+    <string name="txt_contraseña">Escribe tu contraseña</string>
+    <string name="btn_entrar">Entrar</string>
+    <string name="btn_registrar">Registrar</string>
+</resources>
